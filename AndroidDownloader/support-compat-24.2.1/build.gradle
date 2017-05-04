@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('support-compat-24.2.1.aar'))
