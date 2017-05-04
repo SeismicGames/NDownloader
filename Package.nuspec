@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SeismicGames.NativeDownloader</id>
+    <version>1.0.10</version>
+    <authors>SeismicGames</authors>
+    <owners>SeismicGames</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Downloader that leverages native download services on iOS and Android</description>
+    <copyright>Copyright 2016</copyright>
+    <releaseNotes>
+      1.0.10- adding visible error code to download request.  Request is now passed in to request events.
+      1.0.9 - downloader will not stop on unrecoverable errors and enter the Failed state appropriately
+      1.0.8 - fixed issue with download name mangling causing broken download state
+      1.0.7 - fix compile issue on non editor and non android platforms
+      1.0.6 - fixing non-android implementation by adding a fallback UnityWebRequest implementation for other platforms
+      1.0.5 - added support for verifying file by md5 hash
+      1.0.4 - added custom notification support
+      1.0.3 - added cookie support
+            - bug fix for editor downloads.
+      1.0.2 - bug fix for forcing tmp file deletion
+      1.0.1 - moving calls in DownloadloadRequest to background thread.
+    </releaseNotes>
+  </metadata>
+  <files>
+    <file src="Assets\NDownloader\Scripts\**" exclude="Assets\NDownloader\Scripts\Editor**" target="content\Scripts\" />
+    <file src="Assets\NDownloader\Scripts.meta" target="content\Scripts.meta" />
+    <file src="Assets\NDownloader\Plugins\**"  target="content\Plugins\" />
+    <file src="Assets\NDownloader\Plugins.meta"  target="content\Plugins.meta" />
+  </files>
+</package>

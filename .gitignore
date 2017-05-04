@@ -1,0 +1,71 @@
+# Unity generated
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ibrary/
+/Assets/AssetStoreTools*
+sysinfo.txt
+*.stackdump
+*.pidb.meta
+# Visual Studio / MonoDevelop / Rider generated
+[Ee]xported[Oo]bj/
+.vs/
+/*.userprefs
+/*.csproj
+/*.pidb
+/*.suo
+/*.sln*
+/*.[Uu]ser
+/*.unityproj
+/*.booproj
+/*.tmp
+/*.svd
+/.idea*/
+.consulo/
+ 
+# Builds
+*.apk
+*.ipa
+*.unitypackage
+# OS generated
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
+[Dd]esktop.ini
+
+# Android
+AndroidDownloader/*.iml
+AndroidDownloader/.gradle
+AndroidDownloader/local.properties
+AndroidDownloader/.idea/
+AndroidDownloader/build/
+AndroidDownloader/capturesAndroidDownloader/
+
+# Xcode https://github.com/github/gitignore/blob/master/Global/Xcode.gitignore
+
+## Build generated
+iOSDownloader/Builds/
+
+## Various settings
+iOSDownloader/*.pbxuser
+iOSDownloader/!default.pbxuser
+iOSDownloader/*.mode1v3
+iOSDownloader/!default.mode1v3
+iOSDownloader/*.mode2v3
+iOSDownloader/!default.mode2v3
+iOSDownloader/*.perspectivev3
+iOSDownloader/!default.perspectivev3
+iOSDownloader/xcuserdata/
+
+## Other
+iOSDownloader/*.moved-aside
+iOSDownloader/*.xccheckout
+iOSDownloader/*.xcscmblueprint
+iOSDownloader/.idea/
+iOSDownloader/Pods/Pods.xcodeproj/xcuserdata/*.xcuserdatad/
+iOSDownloader/iosdownloader.xcworkspace/xcuserdata/*.xcuserdatad/
+iOSDownloader/iosdownloader.xcodeproj/xcuserdata/*.xcuserdatad/

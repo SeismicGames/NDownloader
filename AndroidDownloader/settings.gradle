@@ -1,0 +1,1 @@
+include ':app', ':support-compat-24.2.1'
