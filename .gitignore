@@ -27,7 +27,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.ipa
-*.unitypackage
 # OS generated
 .DS_Store*
 ._*
