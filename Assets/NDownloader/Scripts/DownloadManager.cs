@@ -111,6 +111,7 @@ public class DownloadManager
 		}
 #endif
         if (position == -1) {
+#if UNITY_EDITOR
             if (request == null)
             {
                 // request might not have started yet
@@ -121,7 +122,7 @@ public class DownloadManager
                 // there was an error
                 Debug.LogErrorFormat("There was an error with the download: {0}", request.responseCode);
             }
-
+#endif
 			return position;
 		} else {
 			return position;

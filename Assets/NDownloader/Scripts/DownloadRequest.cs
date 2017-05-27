@@ -181,7 +181,7 @@ public class DownloadRequest
     private IEnumerator<TResult> WorkOffMainRoutine<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> baseFunc, T1 param1,
         T2 param2, T3 param3, TResult defaultValue)
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_EDITOR // && !UNITY_EDITOR
         TResult result = defaultValue;
         bool resultSet = false;
 
@@ -211,7 +211,7 @@ public class DownloadRequest
                     resultSet = true;
                 }
             },
-            DownloadManager.Instance);
+            _manager);
         //wait for value
         while (!resultSet)
         {
