@@ -68,12 +68,12 @@ static NSMutableDictionary *downloadLocationMap;
         NSLog(@"%@", [NSString stringWithFormat:@"File downloaded to: %@", filePath]);
     }];
     
-    [downloadTask resume];
-    
     [downloadMap setObject:downloadTask
                     forKey:[uuid UUIDString]];
     [downloadProgessMap setObject:[NSNumber numberWithFloat:0.0f]
                            forKey:[uuid UUIDString]];
+    
+    [downloadTask resume];
     
     NSLog(@"%@", [NSString stringWithFormat:@"Started download from %@", url]);
     return [uuid UUIDString];
