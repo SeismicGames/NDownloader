@@ -144,7 +144,7 @@ public class DownloadManager
         UnityWebRequest request;
         if (downloadDict.TryGetValue(id, out request))
         {
-            return request.isError ? request.error : request.responseCode.ToString();
+            return request.isNetworkError ? request.error : request.responseCode.ToString();
         }
         return ERROR_UNKNOWN_ID;
 #endif

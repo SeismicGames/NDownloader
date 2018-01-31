@@ -70,3 +70,7 @@ iOSDownloader/Pods/Pods.xcodeproj/xcuserdata/*.xcuserdatad/
 iOSDownloader/iosdownloader.xcworkspace/xcuserdata/*.xcuserdatad/
 iOSDownloader/iosdownloader.xcodeproj/xcuserdata/*.xcuserdatad/
 iOSDownloader/iosdownloader.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad/
+
+## Rider
+Assets/Plugins/Editor/Jetbrains/
+Assets/Plugins/Editor/Jetbrains.meta
