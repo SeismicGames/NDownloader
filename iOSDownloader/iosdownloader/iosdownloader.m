@@ -38,6 +38,12 @@ static NSMutableDictionary *downloadLocationMap;
         CGFloat percentageCompleted = written/total;
         int progress = (int) (percentageCompleted * 100);
         
+        // this code block should never set progress to 100, the completionHandler will do that
+        // to confirm the download is 100% finished
+        if(progress >= 100) {
+            progress = 99;
+        }
+        
         [downloadProgessMap setObject:[NSNumber numberWithInt:progress]
                                forKey:[uuid UUIDString]];
     }];
@@ -66,6 +72,10 @@ static NSMutableDictionary *downloadLocationMap;
                                 forKey:[uuid UUIDString]];
         
         NSLog(@"%@", [NSString stringWithFormat:@"File downloaded to: %@", filePath]);
+        
+        // finally set download progress to 100%
+        [downloadProgessMap setObject:[NSNumber numberWithInt:100]
+                               forKey:[uuid UUIDString]];
     }];
     
     [downloadMap setObject:downloadTask
