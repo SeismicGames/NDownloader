@@ -18,7 +18,7 @@ public class DownloadRequest
     //default so we dont have to null check
     public event Action<DownloadRequest, DownloadState> StateChanged = (arg1, arg2) => { };
     public event Action<DownloadRequest, float> ProgressChanged = (arg1, arg2) => { };
-    public event Action<DownloadRequest, string> DownloadIdChanged = (arg1, arg2) => { };
+    public event Action<DownloadRequest, long> DownloadIdChanged = (arg1, arg2) => { };
 
     private readonly string _url;
     private readonly string _destPath;
@@ -53,8 +53,8 @@ public class DownloadRequest
 
     private DownloadManager _manager;
 
-    private string _downloadId;
-    public string DownloadId
+    private long _downloadId;
+    public long DownloadId
     {
         get { return _downloadId; }
         private set
@@ -89,7 +89,7 @@ public class DownloadRequest
         _manager.Init();
 
         //reset
-        _downloadId = null;
+        _downloadId = 0;
 
         //if file exists in path -> done
         if (File.Exists(_destPath))
@@ -113,8 +113,7 @@ public class DownloadRequest
             }
         }
 
-        var downloadId = GetDownloadId(_url, _destPath);
-        if (!string.IsNullOrEmpty(downloadId)) { DownloadId = downloadId; }
+        DownloadId = GetDownloadId(_url, _destPath);
 
         while (true)
         {
@@ -137,7 +136,7 @@ public class DownloadRequest
                 }
 
                 //clear downloadId
-                StoreDownloadId(_url, _destPath, "");
+                StoreDownloadId(_url, _destPath, 0);
                 var removeRoutine = WorkOffMainRoutine(_manager.RemoveDownload, DownloadId);
                 while (removeRoutine.MoveNext()) { yield return null; }
             }
@@ -155,7 +154,7 @@ public class DownloadRequest
                     State = DownloadState.Downloading;
                     string tempName = string.Format("{0}.tmp", string.IsNullOrEmpty(_md5Hash) ? Guid.NewGuid().ToString() : _md5Hash);
 
-                    var startRoutine = WorkOffMainRoutine(_manager.StartDownload, _url, tempName, Cookie, "");
+                    var startRoutine = WorkOffMainRoutine(_manager.StartDownload, _url, tempName, Cookie, 0);
                     while (startRoutine.MoveNext()) { yield return null; }
                     DownloadId = startRoutine.Current;
                     StoreDownloadId(_url, _destPath, DownloadId);
@@ -163,7 +162,7 @@ public class DownloadRequest
                 else
                 {
                     ErrorCode = errorCode;
-                    StoreDownloadId(_url, _destPath, null);
+                    StoreDownloadId(_url, _destPath, 0);
                     State = DownloadState.Failed;
                     break;
                 }
@@ -239,14 +238,15 @@ public class DownloadRequest
         return WorkOffMainRoutine<TParam, object, object>((t1, ignored1) => { func(t1); return null; }, param, null, null);
     }
 
-    private void StoreDownloadId(string url, string dest, string id)
+    private void StoreDownloadId(string url, string dest, long id)
     {
-        PlayerPrefs.SetString(GetUrlKey(url, dest), id);
+        PlayerPrefs.SetString(GetUrlKey(url, dest), id.ToString());
     }
 
-    private string GetDownloadId(string url, string dest)
+    private long GetDownloadId(string url, string dest)
     {
-        return PlayerPrefs.GetString(GetUrlKey(url, dest));
+        string idStr = PlayerPrefs.GetString(GetUrlKey(url, dest));
+        return string.IsNullOrEmpty(idStr) ? 0 : Convert.ToInt64(idStr);
     }
 
     private string GetUrlKey(string url, string dest)

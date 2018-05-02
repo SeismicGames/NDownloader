@@ -1,5 +1,5 @@
 #import "UnityHelper.h"
-#import "iosdownloader.h"
+#import "NDownloader.h"
 
 @implementation UnityHelper
 
@@ -38,27 +38,26 @@ char* MakeStringCopy (const char* string)
 #if __cplusplus
 extern "C" {
 #endif
-    const char* _startDownload(const char* url) {
-        NSString *uuid = [iosdownloader startDownload:CreateNSString(url)];
-        return MakeStringCopy(CreateConstChar(uuid));
+    unsigned long _startDownload(const char* url, const char* destination) {
+        NDownloader *nDownloader = [NDownloader sharedNDownloader];
+        return [nDownloader startDownload:CreateNSString(url)
+                              destination:CreateNSString(destination)];
     }
     
-    int _checkStatus(const char* Id) {
-        return [iosdownloader checkStatus:CreateNSString(Id)];
+    int _checkStatus(unsigned long id) {
+        NDownloader *nDownloader = [NDownloader sharedNDownloader];
+        return [nDownloader checkStatus:id];
     }
     
-    const char* _getError(const char* Id) {
-        NSString *errStr = [iosdownloader getError:CreateNSString(Id)];
+    const char* _getError(unsigned long id) {
+        NDownloader *nDownloader = [NDownloader sharedNDownloader];
+        NSString *errStr = [nDownloader getError:id];
         return MakeStringCopy(CreateConstChar(errStr));
     }
-    
-    bool _moveFile(const char* Id, const char* destination) {
-        return [iosdownloader moveFile:CreateNSString(Id)
-                           destination:CreateNSString(destination)];
-    }
-    
-    void _removeFile(const char* Id) {
-        [iosdownloader removeFile:CreateNSString(Id)];
+
+    void _cleanup(unsigned long id) {
+        NDownloader *nDownloader = [NDownloader sharedNDownloader];
+        [nDownloader cleanup:id];
     }
 #if __cplusplus
 }

@@ -75,7 +75,7 @@ public class DownloaderExample : MonoBehaviour
         }
     }
 
-    private void OnDownloadIdChanged(DownloadRequest req, string downloadId)
+    private void OnDownloadIdChanged(DownloadRequest req, long downloadId)
     {
         Manager.TrackDownloadIds(downloadId);
     }

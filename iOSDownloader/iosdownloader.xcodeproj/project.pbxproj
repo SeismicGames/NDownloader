@@ -7,60 +7,72 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5353E3AF1EB93FDC009E5BD8 /* UnityHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5353E3AE1EB93FDC009E5BD8 /* UnityHelper.mm */; };
-		535986CE1DBAF622003E2AA3 /* libAFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 535986CA1DBAF559003E2AA3 /* libAFNetworking.a */; };
-		53EE65B11DB049FA00FFFE04 /* iosdownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 53EE65B01DB049FA00FFFE04 /* iosdownloader.m */; };
-		53EE65B21DB049FA00FFFE04 /* iosdownloader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 53EE65AF1DB049FA00FFFE04 /* iosdownloader.h */; };
-		AB50EB5CA0303F26EA1A22E7 /* libPods-iosdownloader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEDB29FB548D8C051AE4CC7 /* libPods-iosdownloader.a */; };
+		D20FCD2720229CDA0078E6A7 /* UnityHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5353E3AE1EB93FDC009E5BD8 /* UnityHelper.mm */; };
+		D20FCD2820229CDA0078E6A7 /* NDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 53EE65B01DB049FA00FFFE04 /* NDownloader.m */; };
+		D20FCD2920229CEB0078E6A7 /* UnityHelper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5353E3AD1EB93FDC009E5BD8 /* UnityHelper.h */; };
+		D20FCD2A20229CEB0078E6A7 /* NDownloader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 53EE65AF1DB049FA00FFFE04 /* NDownloader.h */; };
+		D24C6EEC2025003C004C2638 /* NDownloaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = D24C6EEB2025003C004C2638 /* NDownloaderTest.m */; };
+		D24C6EEE2025003C004C2638 /* libiosdownloader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D20FCD1E20228CF70078E6A7 /* libiosdownloader.a */; };
+		DC355B853EF69FAAB59EA155 /* DownloadData.m in Sources */ = {isa = PBXBuildFile; fileRef = DC355E34A5626F81CA051CAA /* DownloadData.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D24C6EEF2025003C004C2638 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 53EE65A41DB049FA00FFFE04 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D20FCD1D20228CF70078E6A7;
+			remoteInfo = iosdownloader;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
-		53EE65AA1DB049FA00FFFE04 /* CopyFiles */ = {
+		D20FCD1C20228CF70078E6A7 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				53EE65B21DB049FA00FFFE04 /* iosdownloader.h in CopyFiles */,
+				D20FCD2920229CEB0078E6A7 /* UnityHelper.h in CopyFiles */,
+				D20FCD2A20229CEB0078E6A7 /* NDownloader.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		22BFE5407FDE89FABDBF112F /* Pods-iosdownloader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosdownloader.release.xcconfig"; path = "Pods/Target Support Files/Pods-iosdownloader/Pods-iosdownloader.release.xcconfig"; sourceTree = "<group>"; };
 		5353E3AD1EB93FDC009E5BD8 /* UnityHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnityHelper.h; path = iosdownloader/UnityHelper/UnityHelper.h; sourceTree = "<group>"; };
 		5353E3AE1EB93FDC009E5BD8 /* UnityHelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = UnityHelper.mm; path = iosdownloader/UnityHelper/UnityHelper.mm; sourceTree = "<group>"; };
-		535986CA1DBAF559003E2AA3 /* libAFNetworking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAFNetworking.a; path = "Builds/iosdownloader/Build/Products/Debug-iphoneos/AFNetworking/libAFNetworking.a"; sourceTree = "<group>"; };
-		53EE65AC1DB049FA00FFFE04 /* libiosdownloader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libiosdownloader.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		53EE65AF1DB049FA00FFFE04 /* iosdownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iosdownloader.h; sourceTree = "<group>"; };
-		53EE65B01DB049FA00FFFE04 /* iosdownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iosdownloader.m; sourceTree = "<group>"; };
-		9DEDB29FB548D8C051AE4CC7 /* libPods-iosdownloader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iosdownloader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D663A103BA563FE25AE428AF /* Pods-iosdownloader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosdownloader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosdownloader/Pods-iosdownloader.debug.xcconfig"; sourceTree = "<group>"; };
+		53EE65AF1DB049FA00FFFE04 /* NDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NDownloader.h; sourceTree = "<group>"; };
+		53EE65B01DB049FA00FFFE04 /* NDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NDownloader.m; sourceTree = "<group>"; };
+		D20FCD1E20228CF70078E6A7 /* libiosdownloader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libiosdownloader.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D24C6EE12024FF50004C2638 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		D24C6EE92025003C004C2638 /* NDownloaderTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NDownloaderTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D24C6EEB2025003C004C2638 /* NDownloaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NDownloaderTest.m; sourceTree = "<group>"; };
+		D24C6EED2025003C004C2638 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC355E34A5626F81CA051CAA /* DownloadData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadData.m; sourceTree = "<group>"; };
+		DC355F18B52CFD5E982B8C50 /* DownloadData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadData.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		53EE65A91DB049FA00FFFE04 /* Frameworks */ = {
+		D20FCD1B20228CF70078E6A7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				535986CE1DBAF622003E2AA3 /* libAFNetworking.a in Frameworks */,
-				AB50EB5CA0303F26EA1A22E7 /* libPods-iosdownloader.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D24C6EE62025003C004C2638 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D24C6EEE2025003C004C2638 /* libiosdownloader.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0FD310AF18A3A2EF6A5BD470 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D663A103BA563FE25AE428AF /* Pods-iosdownloader.debug.xcconfig */,
-				22BFE5407FDE89FABDBF112F /* Pods-iosdownloader.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		5353E3B01EB93FE2009E5BD8 /* UnityHelper */ = {
 			isa = PBXGroup;
 			children = (
@@ -75,16 +87,17 @@
 			isa = PBXGroup;
 			children = (
 				53EE65AE1DB049FA00FFFE04 /* iosdownloader */,
+				D24C6EEA2025003C004C2638 /* NDownloaderTest */,
 				53EE65AD1DB049FA00FFFE04 /* Products */,
-				0FD310AF18A3A2EF6A5BD470 /* Pods */,
-				AD47BBAF66FED2F0934CB921 /* Frameworks */,
+				D24C6EE02024FF50004C2638 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		53EE65AD1DB049FA00FFFE04 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				53EE65AC1DB049FA00FFFE04 /* libiosdownloader.a */,
+				D20FCD1E20228CF70078E6A7 /* libiosdownloader.a */,
+				D24C6EE92025003C004C2638 /* NDownloaderTest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -93,33 +106,41 @@
 			isa = PBXGroup;
 			children = (
 				5353E3B01EB93FE2009E5BD8 /* UnityHelper */,
-				53EE65AF1DB049FA00FFFE04 /* iosdownloader.h */,
-				53EE65B01DB049FA00FFFE04 /* iosdownloader.m */,
+				53EE65AF1DB049FA00FFFE04 /* NDownloader.h */,
+				53EE65B01DB049FA00FFFE04 /* NDownloader.m */,
+				DC355E34A5626F81CA051CAA /* DownloadData.m */,
+				DC355F18B52CFD5E982B8C50 /* DownloadData.h */,
 			);
 			path = iosdownloader;
 			sourceTree = "<group>";
 		};
-		AD47BBAF66FED2F0934CB921 /* Frameworks */ = {
+		D24C6EE02024FF50004C2638 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				535986CA1DBAF559003E2AA3 /* libAFNetworking.a */,
-				9DEDB29FB548D8C051AE4CC7 /* libPods-iosdownloader.a */,
+				D24C6EE12024FF50004C2638 /* XCTest.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D24C6EEA2025003C004C2638 /* NDownloaderTest */ = {
+			isa = PBXGroup;
+			children = (
+				D24C6EEB2025003C004C2638 /* NDownloaderTest.m */,
+				D24C6EED2025003C004C2638 /* Info.plist */,
+			);
+			path = NDownloaderTest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		53EE65AB1DB049FA00FFFE04 /* iosdownloader */ = {
+		D20FCD1D20228CF70078E6A7 /* iosdownloader */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 53EE65B51DB049FA00FFFE04 /* Build configuration list for PBXNativeTarget "iosdownloader" */;
+			buildConfigurationList = D20FCD2420228CF70078E6A7 /* Build configuration list for PBXNativeTarget "iosdownloader" */;
 			buildPhases = (
-				2C114D042F6734073F6EE757 /* [CP] Check Pods Manifest.lock */,
-				53EE65A81DB049FA00FFFE04 /* Sources */,
-				53EE65A91DB049FA00FFFE04 /* Frameworks */,
-				53EE65AA1DB049FA00FFFE04 /* CopyFiles */,
-				35CB69A48B99FD55311953ED /* [CP] Copy Pods Resources */,
+				D20FCD1A20228CF70078E6A7 /* Sources */,
+				D20FCD1B20228CF70078E6A7 /* Frameworks */,
+				D20FCD1C20228CF70078E6A7 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -127,8 +148,26 @@
 			);
 			name = iosdownloader;
 			productName = iosdownloader;
-			productReference = 53EE65AC1DB049FA00FFFE04 /* libiosdownloader.a */;
+			productReference = D20FCD1E20228CF70078E6A7 /* libiosdownloader.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		D24C6EE82025003C004C2638 /* NDownloaderTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D24C6EF12025003C004C2638 /* Build configuration list for PBXNativeTarget "NDownloaderTest" */;
+			buildPhases = (
+				D24C6EE52025003C004C2638 /* Sources */,
+				D24C6EE62025003C004C2638 /* Frameworks */,
+				D24C6EE72025003C004C2638 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D24C6EF02025003C004C2638 /* PBXTargetDependency */,
+			);
+			name = NDownloaderTest;
+			productName = NDownloaderTest;
+			productReference = D24C6EE92025003C004C2638 /* NDownloaderTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -139,8 +178,13 @@
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Keith Miller";
 				TargetAttributes = {
-					53EE65AB1DB049FA00FFFE04 = {
-						CreatedOnToolsVersion = 8.0;
+					D20FCD1D20228CF70078E6A7 = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = QKMT9QL887;
+						ProvisioningStyle = Automatic;
+					};
+					D24C6EE82025003C004C2638 = {
+						CreatedOnToolsVersion = 9.2;
 						DevelopmentTeam = QKMT9QL887;
 						ProvisioningStyle = Automatic;
 					};
@@ -158,64 +202,57 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				53EE65AB1DB049FA00FFFE04 /* iosdownloader */,
+				D20FCD1D20228CF70078E6A7 /* iosdownloader */,
+				D24C6EE82025003C004C2638 /* NDownloaderTest */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		2C114D042F6734073F6EE757 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
+/* Begin PBXResourcesBuildPhase section */
+		D24C6EE72025003C004C2638 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-iosdownloader-checkManifestLockResult.txt",
-			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
-		35CB69A48B99FD55311953ED /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iosdownloader/Pods-iosdownloader-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		53EE65A81DB049FA00FFFE04 /* Sources */ = {
+		D20FCD1A20228CF70078E6A7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53EE65B11DB049FA00FFFE04 /* iosdownloader.m in Sources */,
-				5353E3AF1EB93FDC009E5BD8 /* UnityHelper.mm in Sources */,
+				D20FCD2720229CDA0078E6A7 /* UnityHelper.mm in Sources */,
+				D20FCD2820229CDA0078E6A7 /* NDownloader.m in Sources */,
+				DC355B853EF69FAAB59EA155 /* DownloadData.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D24C6EE52025003C004C2638 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D24C6EEC2025003C004C2638 /* NDownloaderTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D24C6EF02025003C004C2638 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D20FCD1D20228CF70078E6A7 /* iosdownloader */;
+			targetProxy = D24C6EEF2025003C004C2638 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		53EE65B31DB049FA00FFFE04 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -263,6 +300,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				VALID_ARCHS = arm64;
 			};
 			name = Debug;
 		};
@@ -270,6 +308,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -309,46 +348,89 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};
-		53EE65B61DB049FA00FFFE04 /* Debug */ = {
+		D20FCD2520228CF70078E6A7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D663A103BA563FE25AE428AF /* Pods-iosdownloader.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QKMT9QL887;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Builds/iosdownloader/Build/Products/Debug-iphoneos/AFNetworking",
-				);
-				ONLY_ACTIVE_ARCH = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
 			};
 			name = Debug;
 		};
-		53EE65B71DB049FA00FFFE04 /* Release */ = {
+		D20FCD2620228CF70078E6A7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 22BFE5407FDE89FABDBF112F /* Pods-iosdownloader.release.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = QKMT9QL887;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Builds/iosdownloader/Build/Products/Debug-iphoneos/AFNetworking",
-				);
-				ONLY_ACTIVE_ARCH = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = Release;
+		};
+		D24C6EF22025003C004C2638 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QKMT9QL887;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = NDownloaderTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.seismicgames.NDownloaderTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = Debug;
+		};
+		D24C6EF32025003C004C2638 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = QKMT9QL887;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = NDownloaderTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.seismicgames.NDownloaderTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
 			};
 			name = Release;
@@ -365,11 +447,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		53EE65B51DB049FA00FFFE04 /* Build configuration list for PBXNativeTarget "iosdownloader" */ = {
+		D20FCD2420228CF70078E6A7 /* Build configuration list for PBXNativeTarget "iosdownloader" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				53EE65B61DB049FA00FFFE04 /* Debug */,
-				53EE65B71DB049FA00FFFE04 /* Release */,
+				D20FCD2520228CF70078E6A7 /* Debug */,
+				D20FCD2620228CF70078E6A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D24C6EF12025003C004C2638 /* Build configuration list for PBXNativeTarget "NDownloaderTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D24C6EF22025003C004C2638 /* Debug */,
+				D24C6EF32025003C004C2638 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

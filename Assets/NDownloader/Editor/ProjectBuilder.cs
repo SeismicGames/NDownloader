@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 
 public class ProjectBuilder : EditorWindow {
-    public static readonly string BASE_PATH = Directory.GetParent(Application.dataPath).ToString();
+    private static string BasePath;
 
     public enum Platform
     {
@@ -36,7 +36,7 @@ public class ProjectBuilder : EditorWindow {
     }
 
     private Platform platform = Platform.None;
-    string outputLocation = BASE_PATH + Path.DirectorySeparatorChar + "build";
+    string outputLocation = BasePath + Path.DirectorySeparatorChar + "build";
     bool debugBuild;
 
     [MenuItem("Build/Build Player")]
@@ -46,7 +46,7 @@ public class ProjectBuilder : EditorWindow {
         window.maxSize = new Vector2(500f, 250f);
         window.minSize = window.maxSize;
     }
-
+    
     [MenuItem("Build/Clear Build Prefs")]
     public static void ClearPrefs()
     {
@@ -98,6 +98,8 @@ public class ProjectBuilder : EditorWindow {
 
     public void OnEnable()
     {
+        BasePath = Directory.GetParent(Application.dataPath).ToString();
+        
         if (platform == Platform.None && EditorPrefs.HasKey("ProjectBuilder.platform"))
         {
             platform = (Platform)Enum.Parse(typeof(Platform), EditorPrefs.GetString("ProjectBuilder.platform"), true);
@@ -160,12 +162,13 @@ public class ProjectBuilder : EditorWindow {
 
         //TODO: add toggle
         PlayerSettings.Android.useAPKExpansionFiles = false;
-        string updatedOutputLocation = outputLocation + Path.DirectorySeparatorChar + platform.ToString();
+        string updatedOutputLocation = outputLocation + Path.DirectorySeparatorChar + platform;
 
-        if (!Directory.Exists(updatedOutputLocation))
+        if (Directory.Exists(updatedOutputLocation))
         {
-            Directory.CreateDirectory(updatedOutputLocation);
+            Directory.Delete(updatedOutputLocation, true);
         }
+        Directory.CreateDirectory(updatedOutputLocation);
 
         switch (platform)
         {
