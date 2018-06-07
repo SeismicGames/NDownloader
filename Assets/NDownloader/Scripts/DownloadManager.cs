@@ -19,7 +19,7 @@ public class DownloadManager
 
     public static event Action<DownloadRequest, DownloadRequest.DownloadState> StateChanged = (arg1, arg2) => { };
     public static event Action<DownloadRequest, float> ProgressChanged = (arg1, atg2) => { };
-    public static event Action<DownloadRequest, long> DownloadIdChanged = (arg1, arg2) => { };
+    public static event Action<DownloadRequest, string> DownloadIdChanged = (arg1, arg2) => { };
 
 #if UNITY_ANDROID && !UNITY_EDITOR
     private AndroidJavaClass _downloadService;
@@ -39,7 +39,7 @@ public class DownloadManager
     [DllImport ("__Internal")]
     private static extern void _removeFile(ulong id);
 #else
-    private Dictionary<long, UnityWebRequest> downloadDict = new Dictionary<long, UnityWebRequest>();
+    private Dictionary<string, UnityWebRequest> downloadDict = new Dictionary<string, UnityWebRequest>();
 #endif
     private bool _isInit = false;
 
@@ -61,34 +61,27 @@ public class DownloadManager
 #endif
     }
 
-    public long StartDownload(string url, string filename, string cookie)
+    public string StartDownload(string url, string filename, string cookie)
     {
         Init();
 
-        long trackingGuid;
+        string trackingGuid;
 #if UNITY_ANDROID && !UNITY_EDITOR
 		using (AndroidJavaObject downloadService = _downloadService.CallStatic<AndroidJavaObject>("getInstance"))
 		{
 			trackingGuid = downloadService.Call<string>("startDownload", url, filename, cookie);
 		}
 #elif UNITY_IOS && !UNITY_EDITOR
-		trackingGuid = (long) _startDownload(url);
+		trackingGuid = (string) _startDownload(url);
 #else
         Debug.LogFormat("[DownloadManager:StartDownload] starting for {0}", url);
 
         UnityWebRequest download = new UnityWebRequest(url);
         download.downloadHandler = new DownloadHandlerFileWriter(filename);
-        download.Send();
+        download.SendWebRequest();
 
         // need to make sure it's a positive number for the id
-        trackingGuid = 0;
-        byte[] bytes = new byte[4];
-        while (trackingGuid == 0)
-        {
-            randomGenerator.GetBytes(bytes);
-            trackingGuid = BitConverter.ToUInt32(bytes, 0);
-        }
-        
+        trackingGuid = Guid.NewGuid().ToString();
 		downloadDict.Add(trackingGuid, download);
 #endif
 
@@ -98,9 +91,9 @@ public class DownloadManager
         return trackingGuid;
 	}
 
-	public int CheckDownload(long id)
+	public int CheckDownload(string id)
 	{
-	    if (id == 0) return -1;
+	    if (string.IsNullOrEmpty(id)) return -1;
 		int position = 0;
 #if UNITY_ANDROID && !UNITY_EDITOR		
 		using (AndroidJavaObject downloadService = _downloadService.CallStatic<AndroidJavaObject>("getInstance"))
@@ -108,10 +101,10 @@ public class DownloadManager
 			position = downloadService.Call<int>("checkStatus", id.ToString());
 		}
 #elif UNITY_IOS && !UNITY_EDITOR
-		position = _checkStatus((ulong) id);
+		position = _checkStatus(ulong.Parse(id));
 #else
 	    UnityWebRequest request;
-        if (downloadDict.TryGetValue(id, out request) && !ResponseCodeIsError(request.responseCode))
+        if (downloadDict.TryGetValue(id, out request) && (!request.isDone || !ResponseCodeIsError(request.responseCode)))
 		{
 			position = (int) Math.Floor(request.downloadProgress * 100);
 		    if (!request.isDone) position = Math.Min(position, 99);
@@ -120,7 +113,7 @@ public class DownloadManager
 		}
 #endif
         if (position == -1) {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
             if (request == null)
             {
                 // request might not have started yet
@@ -138,9 +131,9 @@ public class DownloadManager
 		}
 	}
 
-    public string GetError(long id)
+    public string GetError(string id)
     {
-        if (id == 0) return ERROR_UNKNOWN_ID;
+        if (string.IsNullOrEmpty(id)) return ERROR_UNKNOWN_ID;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
         using (AndroidJavaObject downloadService = _downloadService.CallStatic<AndroidJavaObject>("getInstance"))
@@ -148,7 +141,7 @@ public class DownloadManager
             return downloadService.Call<int>("getError", id).ToString();
         }
 #elif UNITY_IOS && !UNITY_EDITOR
-        return _getError((ulong) id);
+        return _getError(ulong.Parse(id));
 #else
         UnityWebRequest request;
         if (downloadDict.TryGetValue(id, out request))
@@ -159,7 +152,7 @@ public class DownloadManager
 #endif
     }
 
-    public void RemoveDownload(long id)
+    public void RemoveDownload(string id)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         using (AndroidJavaObject downloadService = _downloadService.CallStatic<AndroidJavaObject>("getInstance"))
@@ -167,7 +160,7 @@ public class DownloadManager
             downloadService.Call("removeDownload", id);
         }
 #elif UNITY_IOS && !UNITY_EDITOR
-        _removeFile((ulong) id);
+        _removeFile(ulong.Parse(id));
 #else
         if (!downloadDict[id].isDone)
         {
@@ -180,7 +173,7 @@ public class DownloadManager
 #endif
     }
 
-    public bool MoveFile(long id, string dest)
+    public bool MoveFile(string id, string dest)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         using (AndroidJavaObject downloadService = _downloadService.CallStatic<AndroidJavaObject>("getInstance"))
@@ -188,7 +181,7 @@ public class DownloadManager
             return downloadService.Call<bool>("moveFile", id, dest);
         }
 #elif UNITY_IOS && !UNITY_EDITOR
-        return _moveFile((ulong) id, dest);
+        return _moveFile(ulong.Parse(id), dest);
 #else
         var handler = downloadDict[id].downloadHandler as DownloadHandlerFileWriter;
         var moved = false;
@@ -221,7 +214,7 @@ public class DownloadManager
         return true;
     }
 
-    public void TrackDownloadIds(params long[] ids)
+    public void TrackDownloadIds(params string[] ids)
     {
 #if !UNITY_EDITOR &&  UNITY_ANDROID
         long[] nativeIds = new long[ids.Length];
@@ -264,7 +257,7 @@ public class DownloadManager
         ProgressChanged(req, progress);
     }
 
-    public void OnDownloadIdChanged(DownloadRequest req, long downloadId)
+    public void OnDownloadIdChanged(DownloadRequest req, string downloadId)
     {
         DownloadIdChanged(req, downloadId);
     }
@@ -275,7 +268,7 @@ public class DownloadManager
     }
 }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
 public class DownloadHandlerFileWriter : DownloadHandlerScript, IDisposable
 {
     private readonly string _cachePath;
