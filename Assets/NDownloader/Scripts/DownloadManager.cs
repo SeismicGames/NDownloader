@@ -25,10 +25,10 @@ public class DownloadManager
     private AndroidJavaClass _downloadService;
 #elif UNITY_IOS && !UNITY_EDITOR
     [DllImport ("__Internal")]
-    private static extern ulong _startDownload(string url);
+    private static extern ulong _startDownload(string url, string filename);
 
     [DllImport ("__Internal")]
-    private static extern int _checkStatus(ulong id);
+    private static extern long _checkStatus(ulong id);
 
     [DllImport ("__Internal")]
     private static extern string _getError(ulong id);
@@ -72,7 +72,7 @@ public class DownloadManager
 			trackingGuid = downloadService.Call<string>("startDownload", url, filename, cookie);
 		}
 #elif UNITY_IOS && !UNITY_EDITOR
-		trackingGuid = (string) _startDownload(url);
+		trackingGuid = Convert.ToString(_startDownload(url, filename));
 #else
         Debug.LogFormat("[DownloadManager:StartDownload] starting for {0}", url);
 
@@ -101,7 +101,7 @@ public class DownloadManager
 			position = downloadService.Call<int>("checkStatus", id.ToString());
 		}
 #elif UNITY_IOS && !UNITY_EDITOR
-		position = _checkStatus(ulong.Parse(id));
+		position = (int) _checkStatus(ulong.Parse(id));
 #else
 	    UnityWebRequest request;
         if (downloadDict.TryGetValue(id, out request) && (!request.isDone || !ResponseCodeIsError(request.responseCode)))
@@ -181,7 +181,12 @@ public class DownloadManager
             return downloadService.Call<bool>("moveFile", id, dest);
         }
 #elif UNITY_IOS && !UNITY_EDITOR
-        return _moveFile(ulong.Parse(id), dest);
+        bool moved = _moveFile(ulong.Parse(id), dest);
+        if(moved) {
+            RemoveDownload(id);
+        }
+    
+        return moved;
 #else
         var handler = downloadDict[id].downloadHandler as DownloadHandlerFileWriter;
         var moved = false;
@@ -216,7 +221,7 @@ public class DownloadManager
 
     public void TrackDownloadIds(params string[] ids)
     {
-#if !UNITY_EDITOR &&  UNITY_ANDROID
+#if !UNITY_EDITOR && UNITY_ANDROID
         long[] nativeIds = new long[ids.Length];
         for (int index = 0; index < ids.Length; index++)
         {

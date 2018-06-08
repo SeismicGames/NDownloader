@@ -7,13 +7,15 @@
 #if __cplusplus
 extern "C" {
 #endif
-    extern unsigned long _startDownload(const char* url, const char* destination);
+    extern unsigned long _startDownload(const char* url, const char* tempFile);
     
-    extern int _checkStatus(unsigned long id);
+    extern long _checkStatus(unsigned long id);
     
     extern const char* _getError(unsigned long id);
-
-    extern void cleanup(unsigned long id);
+    
+    extern bool _moveFile(unsigned long id, const char* destination);
+    
+    extern void _removeFile(unsigned long id);
 #if __cplusplus
 }
 #endif

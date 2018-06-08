@@ -2,7 +2,6 @@
 
 @interface NDownloader : NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate> {
     NSURLSession *_session;
-    NSString *_downloadMapKey;
 }
 
 // singleton method
@@ -10,9 +9,11 @@
 
 // class methods
 - (NSUInteger) startDownload:(NSString *)url
-                 destination:(NSString *)destination;
-- (int) checkStatus:(NSUInteger)downloadId;
+                    tempFile:(NSString *)tempFile;
+- (NSInteger) checkStatus:(NSUInteger)downloadId;
 - (NSString *) getError:(NSUInteger)downloadId;
-- (void) cleanup:(NSUInteger)downloadId;
+- (bool) moveFile:(NSUInteger)downloadId
+      destination:(NSString *)destination;
+- (void) removeFile:(NSUInteger)downloadId;
 
 @end

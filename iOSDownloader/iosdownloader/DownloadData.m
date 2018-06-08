@@ -8,15 +8,14 @@
 @implementation DownloadData
 
 @synthesize id = _id;
+@synthesize downloadMapKey = _downloadMapKey;
 @synthesize location;
-@synthesize destination;
 @synthesize progress;
 @synthesize error;
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:@(_id) forKey:@"id"];
     [coder encodeObject:location forKey:@"location"];
-    [coder encodeObject:destination forKey:@"destination"];
     [coder encodeObject:@(progress) forKey:@"progress"];
     [coder encodeObject:error forKey:@"error"];
 }
@@ -26,11 +25,10 @@
     if(self) {
         _id = [[coder decodeObjectForKey:@"id"] unsignedIntegerValue];
         location = [coder decodeObjectForKey:@"location"];
-        destination = [coder decodeObjectForKey:@"destination"];
-        progress = [[coder decodeObjectForKey:@"progress"] floatValue];
+        progress = [[coder decodeObjectForKey:@"progress"] integerValue];
         error = [coder decodeObjectForKey:@"error"];
 
-        _downloadMapKey = [NSString stringWithFormat:@"%@", [[NSBundle bundleForClass:[self class]] bundleIdentifier]];
+        _downloadMapKey = [NSString stringWithFormat:@"ndownloader_%@", [[NSBundle bundleForClass:[self class]] bundleIdentifier]];
     }
 
     return self;
@@ -39,8 +37,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _downloadMapKey = [NSString stringWithFormat:@"%@", [[NSBundle bundleForClass:[self class]] bundleIdentifier]];
-    }
+        _downloadMapKey = [NSString stringWithFormat:@"ndownloader_%@", [[NSBundle bundleForClass:[self class]] bundleIdentifier]];    }
 
     return self;
 }
@@ -48,16 +45,15 @@
 - (instancetype)initWithId:(NSUInteger)downloadId {
     self = [super init];
     if (self) {
-        _downloadMapKey = [NSString stringWithFormat:@"%@", [[NSBundle bundleForClass:[self class]] bundleIdentifier]];
-
+        _downloadMapKey = [NSString stringWithFormat:@"ndownloader_%@", [[NSBundle bundleForClass:[self class]] bundleIdentifier]];
+        
         NSString *key = [NSString stringWithFormat:@"%@_%lu", _downloadMapKey, downloadId];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSData *data = [userDefaults objectForKey:key];
-
         if(data == nil) {
             return nil;
         }
-
+        
         self = [NSKeyedUnarchiver unarchiveObjectWithData: data];
     }
 
@@ -71,10 +67,10 @@
     [userDefaults synchronize];
 }
 
-- (void)delete {
+- (void)remove {
     NSString *key = [NSString stringWithFormat:@"%@_%lu", _downloadMapKey, _id];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults removeObjectForKey:[NSString stringWithFormat:@"%lu",_id]];
+    [userDefaults removeObjectForKey:key];
 }
 
 @end

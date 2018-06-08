@@ -34,16 +34,19 @@
 }
 
 - (NSUInteger)startDownload:(NSString *)url
-                destination:(NSString *)destination {
+                   tempFile:(NSString *)tempFile; {
     NSURL *URL = [NSURL URLWithString:url];
 
     NSURLSessionDownloadTask *downloadTask;
     downloadTask = [_session downloadTaskWithURL:URL];
 
-    DownloadData *data = [DownloadData init];
-    [self storeInPrefs:_progressKey
-                    id:[downloadTask taskIdentifier]
-                  with:@0];
+    // handle temp file
+    NSString *tempDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    DownloadData *data = [[DownloadData alloc] init];
+    [data setId:[downloadTask taskIdentifier]];
+    [data setLocation:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@", [tempDir stringByAppendingPathComponent:tempFile]]]];
+    [data setProgress:0];
+    [data save];
 
     [downloadTask resume];
 
@@ -51,51 +54,67 @@
     return [downloadTask taskIdentifier];
 }
 
-- (int)checkStatus:(NSUInteger)downloadId {
-    NSNumber *progress = (NSNumber *) [self readFromPrefs:_progressKey
-                                                       id:downloadId];
-    if (progress == nil) {
+- (NSInteger)checkStatus:(NSUInteger)downloadId {
+    DownloadData *data = [[DownloadData alloc] initWithId:downloadId];
+    if (data == nil) {
         NSLog(@"%@", [NSString stringWithFormat:@"ID %@ passed in was not found", @(downloadId)]);
         return -1;
     }
-
-    return [progress intValue];
+    
+    return [data progress];
 }
 
 - (NSString *)getError:(NSUInteger)downloadId {
-    NSString *errStr = (NSString *) [self readFromPrefs:_errorKey
-                                                     id:downloadId];
-    if (errStr == nil) {
-        errStr = [NSString stringWithFormat:@"id %@ passed in has no error", @(downloadId)];
+    DownloadData *data = [[DownloadData alloc] initWithId:downloadId];
+    if (data == nil) {
+        NSString *errStr = [NSString stringWithFormat:@"id %@ passed in has no error", @(downloadId)];
         NSLog(@"%@", errStr);
         return errStr;
     }
 
-    return errStr;
+    return [data error];
+}
+
+- (bool) moveFile:(NSUInteger)downloadId
+      destination:(NSString *)destination {
+    DownloadData *data = [[DownloadData alloc] initWithId:downloadId];
+    if (data == nil) {
+        NSLog(@"%@", [NSString stringWithFormat:@"id %@ passed in has no file to move", @(downloadId)]);
+        return false;
+    }
+    
+    NSURL *destUrl = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@", destination]];
+    NSLog(@"%@", [NSString stringWithFormat:@"Attempting to MoveFile from: %@ to: %@", [data location], destUrl]);
+    NSError *error = nil;
+    [[NSFileManager defaultManager] copyItemAtURL:[data location]
+                                            toURL:destUrl
+                                            error:&error];
+    if (error != nil) {
+        NSLog(@"%@", [NSString stringWithFormat:@"MoveFile failed: %@", error]);
+        return false;
+    }
+    
+    NSLog(@"%@", [NSString stringWithFormat:@"MoveFile from: %@ to: %@ succeeded", [data location], [destUrl path]]);
+    return true;
 }
 
 - (void)removeFile:(NSUInteger)downloadId {
-    NSURL *path = (NSURL *) [self readFromPrefs:_locationKey
-                                             id:downloadId];
-    if (path == nil) {
+    DownloadData *data = [[DownloadData alloc] initWithId:downloadId];
+    if (data == nil) {
         NSLog(@"%@", [NSString stringWithFormat:@"id %@ passed in has no file to remove", @(downloadId)]);
         return;
     }
 
     NSError *error = nil;
-    [[NSFileManager defaultManager] removeItemAtPath:path
-                                               error:&error];
+    [[NSFileManager defaultManager] removeItemAtURL:[data location]
+                                              error:&error];
 
     if (error != nil) {
         NSLog(@"%@", [NSString stringWithFormat:@"RemoveFile failed: %@", error]);
     }
-}
-
-// safer to have Unity clean up then try to guess
-- (void)cleanup:(NSUInteger)downloadId {
-    [self deleteFromPrefs:_progressKey id:downloadId];
-    [self deleteFromPrefs:_locationKey id:downloadId];
-    [self deleteFromPrefs:_errorKey id:downloadId];
+    
+    NSLog(@"%@", [NSString stringWithFormat:@"RemoveFile %@ succeeded", [data location]]);
+    [data remove];
 }
 
 #pragma mark NSURLSessionDownloadDelegate
@@ -104,15 +123,27 @@
  didFinishDownloadingToURL:(NSURL *)location {
     NSLog(@"%@", [NSString stringWithFormat:@"File downloaded to: %@", location]);
 
-    // mark the location of the download so we can move it
-    [self storeInPrefs:_locationKey
-                    id:[downloadTask taskIdentifier]
-                  with:location];
-
-    // finally set download progress to 100%
-    [self storeInPrefs:_progressKey
-                    id:[downloadTask taskIdentifier]
-                  with:@100];
+    DownloadData *data = [[DownloadData alloc] initWithId:[downloadTask taskIdentifier]];
+    if(data == nil) {
+        NSLog(@"%@", [NSString stringWithFormat:@"id %lu cannot be found", (unsigned long)[downloadTask taskIdentifier]]);
+        return;
+    }
+    
+    // have to move the file in here or else it will disappear
+    NSError *error = nil;
+    [[NSFileManager defaultManager] copyItemAtURL:location
+                                            toURL:[data location]
+                                            error:&error];
+    
+    if (error == nil) {
+        // finally set download progress to 100%
+        [data setProgress:100];
+    } else {
+        NSLog(@"%@", [NSString stringWithFormat:@"Copying file after download failed: %@", error]);
+        [data setProgress:-1];
+    }
+    
+    [data save];
 }
 
 - (void)        URLSession:(NSURLSession *)session
@@ -121,19 +152,24 @@
          totalBytesWritten:(int64_t)totalBytesWritten
  totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
     // calculate download progress
-    float percentageCompleted = (float) totalBytesWritten / (float) totalBytesExpectedToWrite;
+    float percentageCompleted = ((float) totalBytesWritten / (float) totalBytesExpectedToWrite) * 100;
     int progress = (int) floor(percentageCompleted);
-
+    
     // this code block should never set progress to 100, the completionHandler will do that
     // to confirm the download is 100% finished
     if(progress >= 100) {
         progress = 99;
     }
-
+    
     // finally set download progress to 100%
-    [self storeInPrefs:_progressKey
-                    id:[downloadTask taskIdentifier]
-                  with:@(progress)];
+    DownloadData *data = [[DownloadData alloc] initWithId:[downloadTask taskIdentifier]];
+    if(data == nil) {
+        NSLog(@"%@", [NSString stringWithFormat:@"id %lu cannot be found", (unsigned long)[downloadTask taskIdentifier]]);
+        return;
+    }
+    
+    [data setProgress:progress];
+    [data save];
 }
 
 #pragma mark NSURLSessionTaskDelegate
@@ -146,13 +182,15 @@
     }
     
     NSString *errStr = [NSString stringWithFormat:@"Download failed, error: %@", error];
-    NSLog(@"%@", errStr);
-    [self storeInPrefs:_errorKey
-                    id:[downloadTask taskIdentifier]
-                  with:errStr];
-    [self storeInPrefs:_progressKey
-                    id:[downloadTask taskIdentifier]
-                  with:@(-1)];
+    DownloadData *data = [[DownloadData alloc] initWithId:[downloadTask taskIdentifier]];
+    if(data == nil) {
+        NSLog(@"%@", [NSString stringWithFormat:@"id %lu cannot be found", (unsigned long)[downloadTask taskIdentifier]]);
+        return;
+    }
+    
+    [data setProgress:-1];
+    [data setError:errStr];
+    [data save];
 }
 
 #pragma mark NSURLSessionDelegate

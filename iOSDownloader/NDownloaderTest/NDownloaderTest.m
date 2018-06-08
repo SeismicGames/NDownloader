@@ -10,7 +10,7 @@
 #import "NDownloader.h"
 
 @interface NDownloaderTest : XCTestCase
-
+@property (readwrite) NSString *tempFile;
 @end
 
 @implementation NDownloaderTest
@@ -19,6 +19,9 @@
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
     self.continueAfterFailure = false;
+    
+    NSString *tempDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    _tempFile = [tempDir stringByAppendingPathComponent:@"20MB.zip"];
 }
 
 - (void)tearDown {
@@ -26,13 +29,17 @@
     [super tearDown];
     
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:@"com.seismicgames.NDownloaderTest"];
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtPath:_tempFile
+                                               error:&error];
 }
 
 - (void)testSuccessfulDownload {
     NSString *testUrl = @"http://ipv4.download.thinkbroadband.com/20MB.zip";
     NDownloader *nDownloader = [NDownloader sharedNDownloader];
     
-    NSUInteger downloadID = [nDownloader startDownload:testUrl];
+    NSUInteger downloadID = [nDownloader startDownload:testUrl
+                                           destination:_tempFile];
     int progress = [nDownloader checkStatus:downloadID];
     XCTAssertNotEqual(progress, -1);
     

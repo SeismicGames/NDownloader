@@ -38,13 +38,13 @@ char* MakeStringCopy (const char* string)
 #if __cplusplus
 extern "C" {
 #endif
-    unsigned long _startDownload(const char* url, const char* destination) {
+    unsigned long _startDownload(const char* url, const char* tempFile) {
         NDownloader *nDownloader = [NDownloader sharedNDownloader];
         return [nDownloader startDownload:CreateNSString(url)
-                              destination:CreateNSString(destination)];
+                                 tempFile:CreateNSString(tempFile)];
     }
     
-    int _checkStatus(unsigned long id) {
+    long _checkStatus(unsigned long id) {
         NDownloader *nDownloader = [NDownloader sharedNDownloader];
         return [nDownloader checkStatus:id];
     }
@@ -55,9 +55,15 @@ extern "C" {
         return MakeStringCopy(CreateConstChar(errStr));
     }
 
-    void _cleanup(unsigned long id) {
+    bool _moveFile(unsigned long id, const char* destination) {
         NDownloader *nDownloader = [NDownloader sharedNDownloader];
-        [nDownloader cleanup:id];
+        return [nDownloader moveFile:id
+                         destination:CreateNSString(destination)];
+    }
+    
+    void _removeFile(unsigned long id) {
+        NDownloader *nDownloader = [NDownloader sharedNDownloader];
+        [nDownloader removeFile:id];
     }
 #if __cplusplus
 }

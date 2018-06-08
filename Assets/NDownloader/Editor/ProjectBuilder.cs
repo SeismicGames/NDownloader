@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using UnityEditor.Build.Reporting;
 
 public class ProjectBuilder : EditorWindow {
     private static string BasePath;
@@ -180,22 +181,31 @@ public class ProjectBuilder : EditorWindow {
                 break;
         }
 
-        BuildValues bv = new BuildValues(platform);
-        UnityEngine.Debug.Log("Building project in directory: " + outputLocation + " with scenes: " + string.Join(",", scenes) + " options: " + buildOptions);
-        UnityEngine.Debug.Log(string.Format("Define symbols set to {0}", PlayerSettings.GetScriptingDefineSymbolsForGroup(bv.btg)));
+        var bv = new BuildValues(platform);
+        Debug.Log("Building project in directory: " + outputLocation + " with scenes: " + string.Join(",", scenes) + " options: " + buildOptions);
+        Debug.Log(string.Format("Define symbols set to {0}", PlayerSettings.GetScriptingDefineSymbolsForGroup(bv.btg)));
 
-        string error = BuildPipeline.BuildPlayer(scenes, updatedOutputLocation, bv.bt, buildOptions);
-        if (!string.IsNullOrEmpty(error))
+        var report = BuildPipeline.BuildPlayer(scenes, updatedOutputLocation, bv.bt, buildOptions);
+
+        if (report.summary.totalErrors > 0)
         {
-            UnityEngine.Debug.LogError("Build Error: " + error);
-            throw new Exception("Build Failed With: " + error);
+            foreach (var step in report.steps)
+            {
+                foreach (var message in step.messages)
+                {
+                    if (message.type == LogType.Error)
+                    {
+                        Debug.LogError("Build Error: " + message);
+                    }                
+                }
+            }
         }
 
         if (UnityEditorInternal.InternalEditorUtility.isHumanControllingUs)
         {
-            if (!string.IsNullOrEmpty(error))
+            if (report.summary.totalErrors > 0)
             {
-                EditorUtility.DisplayDialog("Build Failed", "Build Error: " + error, "Close");
+                EditorUtility.DisplayDialog("Build Failed", "Build Failed", "Close");
             }
             else
             {

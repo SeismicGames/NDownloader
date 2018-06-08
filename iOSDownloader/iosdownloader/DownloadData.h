@@ -5,19 +5,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DownloadData : NSObject <NSCoding> {
-    // for NSUserDefaults
-    NSString *_downloadMapKey;
-}
+@interface DownloadData : NSObject <NSCoding>
 
-@property (readonly) NSUInteger id;
+@property (readwrite) NSUInteger id;
+@property (readonly) NSString *downloadMapKey;
 @property (readwrite) NSURL *location;
-@property (readwrite) NSURL *destination;
-@property (readwrite) float progress;
+@property (readwrite) NSInteger progress;
 @property (readwrite) NSString *error;
 
+- (instancetype)init;
 - (instancetype)initWithId:(NSUInteger)downloadId;
 - (void)save;
-- (void)delete;
+- (void)remove;
 
 @end
