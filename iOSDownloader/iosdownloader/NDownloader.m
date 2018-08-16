@@ -38,10 +38,12 @@
 - (NSUInteger)startDownload:(NSString *)url
                    tempFile:(NSString *)tempFile; {
     NSURL *URL = [NSURL URLWithString:url];
-
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    [request setValue:@"identity" forHTTPHeaderField:@"Accept-Encoding"];
+    
     NSURLSessionDownloadTask *downloadTask;
-    downloadTask = [_session downloadTaskWithURL:URL];
-
+    downloadTask = [_session downloadTaskWithRequest:request];
+    
     // handle temp file
     NSString *tempDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     DownloadData *data = [[DownloadData alloc] init];
