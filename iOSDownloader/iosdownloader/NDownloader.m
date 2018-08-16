@@ -24,7 +24,9 @@
         configuration.discretionary = false;
         configuration.sessionSendsLaunchEvents = true;
         configuration.allowsCellularAccess = true;
-        configuration.waitsForConnectivity = true;
+        if(@available(iOS 11.0, *)) {
+            configuration.waitsForConnectivity = true;
+        }
         _session = [NSURLSession sessionWithConfiguration:configuration
                                                  delegate:self
                                             delegateQueue:nil];
@@ -152,8 +154,28 @@
          totalBytesWritten:(int64_t)totalBytesWritten
  totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
     // calculate download progress
-    float percentageCompleted = ((float) totalBytesWritten / (float) totalBytesExpectedToWrite) * 100;
-    int progress = (int) floor(percentageCompleted);
+    int64_t contentLength = -1;
+    if(totalBytesExpectedToWrite < 0) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*) downloadTask.response;
+        if ([httpResponse respondsToSelector:@selector(allHeaderFields)]) {
+            NSDictionary *dictionary = [httpResponse allHeaderFields];
+            if([dictionary objectForKey:@"content-length"]) {
+                contentLength = [[dictionary objectForKey:@"content-length"] longLongValue];
+            }
+        }
+    } else {
+        contentLength = totalBytesExpectedToWrite;
+    }
+    
+    int progress;
+    if(contentLength == -1) {
+        // not much we can do here
+        NSLog(@"No content length data could be found");
+        progress = 1;
+    } else {
+        float percentageCompleted = ((float) totalBytesWritten / (float) contentLength) * 100;
+        progress = (int) floor(percentageCompleted);
+    }
     
     // this code block should never set progress to 100, the completionHandler will do that
     // to confirm the download is 100% finished
