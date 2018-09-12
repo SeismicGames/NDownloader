@@ -2,13 +2,17 @@
 <package >
   <metadata>
     <id>SeismicGames.NativeDownloader</id>
-    <version>1.0.10</version>
+    <version>1.0.13</version>
     <authors>SeismicGames</authors>
     <owners>SeismicGames</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Downloader that leverages native download services on iOS and Android</description>
     <copyright>Copyright 2016</copyright>
     <releaseNotes>
+      1.0.13- Fixing some bugs WRT Editor and Standalone downloading.  This change fixes and issue where interrupted downloads would be marked as successful.
+			- Also fixed a null pointer exception.
+      1.0.12- fixing issue causing iOS build to fail due to bitcode error.
+      1.0.11- disabling gzip to get accurate progression reports for downloads on iOS.
       1.0.10- adding visible error code to download request.  Request is now passed in to request events.
       1.0.9 - downloader will not stop on unrecoverable errors and enter the Failed state appropriately
       1.0.8 - fixed issue with download name mangling causing broken download state

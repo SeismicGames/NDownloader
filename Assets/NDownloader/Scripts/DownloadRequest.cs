@@ -240,12 +240,13 @@ public class DownloadRequest
 
     private void StoreDownloadId(string url, string dest, string id)
     {
-        PlayerPrefs.SetString(GetUrlKey(url, dest), id.ToString());
+        PlayerPrefs.SetString(GetUrlKey(url, dest), id);
     }
 
     private string GetDownloadId(string url, string dest)
     {
-        return PlayerPrefs.GetString(GetUrlKey(url, dest));
+        var id = PlayerPrefs.GetString(GetUrlKey(url, dest));
+        return string.IsNullOrEmpty(id) ? null : id;
     }
 
     private string GetUrlKey(string url, string dest)

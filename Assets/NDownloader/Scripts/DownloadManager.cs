@@ -104,7 +104,7 @@ public class DownloadManager
 		position = (int) _checkStatus(ulong.Parse(id));
 #else
 	    UnityWebRequest request;
-        if (downloadDict.TryGetValue(id, out request) && (!request.isDone || !ResponseCodeIsError(request.responseCode)))
+        if (downloadDict.TryGetValue(id, out request) && !request.isHttpError && !request.isNetworkError && (!request.isDone || !ResponseCodeIsError(request.responseCode)))
 		{
 			position = (int) Math.Floor(request.downloadProgress * 100);
 		    if (!request.isDone) position = Math.Min(position, 99);
